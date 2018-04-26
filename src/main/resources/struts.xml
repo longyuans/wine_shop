@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <!-- 修改常量管理struts 中的action的工程，这个常量的使用，必须引入 spring和struts的整合包，不然spring无法管理struts2 Action 中的实体类-->
+    <constant name="struts.objectFactory" value="spring" />
+    <package name="wine_shop" extends="struts-default" namespace="/">
+        <global-results>
+            <result name="error">/jsp/error.jsp</result>
+            <result name="success">/jsp/success.jsp</result>
+        </global-results>
+        <!--*******************用户模块****************************-->
+        <!--注册-->
+        <action name="user_regist" class="userAction" method="regist">
+            <result name="login" type="redirect">/login.jsp</result>
+        </action>
+        <!--登陆-->
+        <action name="user_login" class="userAction" method="login">
+            <result name="success" type="redirectAction">index</result>
+            <result name="error">/login.jsp</result>
+        </action>
+        <!--登出-->
+        <action name="user_lginout" class="userAction" method="loginOut">
+            <result name="success" type="redirect">/index.jsp</result>
+            <result name="error">/login.jsp</result>
+        </action>
+        <!--判断用户是否登陆-->
+        <action name="user" class="userAction" method="isLogin">
+            <result name="success" type="redirect">/index.jsp</result>
+            <result name="error">/login.jsp</result>
+        </action>
+        <!--修改个人信息-->
+        <action name="user_info" class="userAction" method="infoChange">
+            <result name="success" type="redirect">/indexSuccess.jsp</result>
+            <result name="error">/userinfo.jsp</result>
+        </action>
+        <!--************************首页*****************************-->
+        <action name="index" class="indexAction" method="index_show">
+            <result name="success" type="redirect">/indexSuccess.jsp</result>
+            <result name="index" >/index.jsp</result>
+        </action>
+        <!--************************产品展示页面***************************-->
+        <action name="product" class="productAction" method="showProduct">
+            <result name="success">/list.jsp</result>
+            <result name="error" type="redirectAction">index</result>
+        </action>
+        <!--产品详情页面-->
+        <action name="productView" class="productAction" method="productView">
+            <result name="success">/viewBook.jsp</result>
+            <result name="error">/list.jsp</result>
+        </action>
+        <!--*************************购物车********************************-->
+        <action name="addShopCart" class="shopCartAction" method="addShopCart">
+            <result name="success">/viewBook.jsp</result>
+            <result name="error">/viewBook.jsp</result>
+        </action>
+        <action name="shopCart" class="shopCartAction" method="shopCart">
+            <result name="success">/shopCart.jsp</result>
+            <result name="empty">/emptyCar.html</result>
+            <result name="error"></result>
+        </action>
+        <!--**************************orderLine管理*************************-->
+        <action name="updateOrderLine" class="orderLineAction" method="updateOrderLine">
+            <result name="success" type="redirectAction">getReceiver</result>
+            <result name="error"></result>
+        </action>
+
+        <!--***************************订单****************************-->
+        <!--下单-->
+        <action name="addOrder" class="orderAction" method="addOrder">
+            <result name="success">/Payfor.jsp</result>
+            <result name="error">/shopCart.jsp</result>
+        </action>
+        <!--付款-->
+        <action name="payForOrder" class="orderAction" method="payForOrder">
+            <result name="success">/PayforCommit.jsp</result>
+        </action>
+        <!--***************************收货地址************************-->
+        <!--显示收货信息-->
+        <action name="getReceiver" class="receiverAction" method="getReceiver">
+            <result name="success">/confirm.jsp</result>
+            <result name="error">/shopCart.jsp</result>
+        </action>
+        <action name="addReceiver" class="receiverAction" method="addReceiver">
+            <result name="success" type="redirectAction">addOrder</result>
+        </action>
+    </package>
+</struts>

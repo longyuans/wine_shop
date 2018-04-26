@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+        ">
+
+    <context:component-scan base-package="com.wine_shop.action"></context:component-scan>
+    <context:component-scan base-package="com.wine_shop.wineService"></context:component-scan>
+    <context:component-scan base-package="com.wine_shop.dao"></context:component-scan>
+
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:jdbc.properties"/>
+    </bean>
+    <!-- data connection setting -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${mysql.driverClassName}"></property>
+        <property name="jdbcUrl" value="${mysql.url}"></property>
+        <property name="user" value="${mysql.username}"></property>
+        <property name="password" value="${mysql.password}"></property>
+        <!-- 设置数据库连接池的最大连接数 -->
+        <property name="maxPoolSize">
+            <value>50</value>
+        </property>
+        <!-- 设置数据库连接池的最小连接数 -->
+        <property name="minPoolSize">
+            <value>5</value>
+        </property>
+        <!-- 设置数据库连接池的初始化连接数 -->
+        <property name="initialPoolSize">
+            <value>5</value>
+        </property>
+        <!-- 设置数据库连接池的连接最大空闲时间 -->
+        <property name="maxIdleTime">
+            <value>20</value>
+        </property>
+        <!-- c3p0缓存Statement的数量数 -->
+        <property name="maxStatements">
+            <value>50</value>
+        </property>
+        <!-- 当连接池里面的连接用完的时候,C3P0一下获取新的连接数 -->
+        <property name="acquireIncrement">
+            <value>20</value>
+        </property>
+
+    </bean>
+
+    <!-- hibernate 管理-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <!-- 引用上面设置的数据源 -->
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.autoReconnect">true</prop>
+                <prop key="hibernate.connection.autocommit">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <!-- 解决session关闭问题 -->
+                <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+                <!-- spring 和 hibernate 整合的时候默认就是使用线程的，下面这一行不用写，写了反而要报错，此外 sessionFaction，不能使用openSession
+                 既不能保存数据到数据库，还不能实现事务功能
+                 -->
+                <!--<prop key="current_session_context_class">thread</prop>-->
+
+                <prop key="hibernate.max_fetch_depth">3</prop>
+                <prop key="hibernate.connection.url" >jdbc:mysql://localhost:3306/wine_shop</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+            </props>
+
+        </property>
+
+        <!-- 包扫描的方式加载注解类 -->
+        <property name="packagesToScan">
+            <list>
+                <value>com.wine_shop.bean</value>
+            </list>
+        </property>
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:com/wine_shop/bean/User.hbm.xml</value>
+                <value>classpath:com/wine_shop/bean/Categories.hbm.xml</value>
+                <value>classpath:com/wine_shop/bean/CategoryDetail.hbm.xml</value>
+                <value>classpath:com/wine_shop/bean/Chateau.hbm.xml</value>
+                <value>classpath:com/wine_shop/bean/Order.hbm.xml</value>
+                <value>classpath:com/wine_shop/bean/PriceRank.hbm.xml</value>
+                <value>classpath:com/wine_shop/bean/Product.hbm.xml</value>
+                <value>classpath:com/wine_shop/bean/Receiver.hbm.xml</value>
+                <value>classpath:com/wine_shop/bean/Report.hbm.xml</value>
+                <value>classpath:com/wine_shop/bean/ReportProducts.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 用注解来实现事物管理 -->
+    <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+   <!--开启事务-->
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <!--分类-->
+    <!--<bean id="categoriesAction" class="com.wine_shop.action.CategoriesAction" scope="prototype">
+        <property name="categoriesService" ref="categoriesService"/>
+    </bean>
+
+    <bean id="categoriesService" class="com.wine_shop.wineService.spring.CategoriesServiceImpl">
+        <property name="categoriesDao" ref="categoriesDao"/>
+    </bean>
+
+    <bean id="categoriesDao" class="com.wine_shop.dao.Hibernate.CategoriesDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    &lt;!&ndash;用户&ndash;&gt;
+    <bean id="userAction" class="com.wine_shop.action.UserAction" scope="prototype">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="userService" class="com.wine_shop.wineService.spring.UserServiceImpl">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
+    <bean id="userDao" class="com.wine_shop.dao.Hibernate.UserDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    &lt;!&ndash;酒庄&ndash;&gt;
+    <bean id="chateauAction" class="com.wine_shop.action.ChateauAction" scope="prototype">
+        <property name="chateauService" ref="chateauService"/>
+    </bean>
+
+    <bean id="chateauService" class="com.wine_shop.wineService.spring.ChateauServiceImpl">
+        <property name="chateauDao" ref="chateauDao"/>
+    </bean>
+
+    <bean id="chateauDao" class="com.wine_shop.dao.Hibernate.ChateauDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    &lt;!&ndash;分类中的明细小类&ndash;&gt;
+    <bean id="categoryDetailAction" class="com.wine_shop.action.CategoryDetailAction" scope="prototype">
+        <property name="categoryDetailService" ref="categoryDetailService"/>
+    </bean>
+
+    <bean id="categoryDetailService" class="com.wine_shop.wineService.spring.CategoryDetailServiceImpl">
+        <property name="categoryDetailDao" ref="categoryDetailDao"/>
+    </bean>
+
+    <bean id="categoryDetailDao" class="com.wine_shop.dao.Hibernate.CategoryDetailDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    &lt;!&ndash;订单&ndash;&gt;
+    <bean id="orderAction" class="com.wine_shop.action.OrderAction" scope="prototype">
+        <property name="orderService" ref="orderService"/>
+    </bean>
+
+    <bean id="orderService" class="com.wine_shop.wineService.spring.OrderServiceImpl">
+        <property name="orderDao" ref="orderDao"/>
+    </bean>
+
+    <bean id="orderDao" class="com.wine_shop.dao.Hibernate.OrderDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    &lt;!&ndash;价格&ndash;&gt;
+    <bean id="priceRankAction" class="com.wine_shop.action.PriceRankAction" scope="prototype">
+        <property name="priceRankService" ref="priceRankService"/>
+    </bean>
+
+    <bean id="priceRankService" class="com.wine_shop.wineService.spring.PriceRankServiceImpl">
+        <property name="priceRankDao" ref="priceRankDao"/>
+    </bean>
+
+    <bean id="priceRankDao" class="com.wine_shop.dao.Hibernate.PriceRankDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    &lt;!&ndash;酒&ndash;&gt;
+    <bean id="productAction" class="com.wine_shop.action.ProductAction" scope="prototype">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="productService" class="com.wine_shop.wineService.spring.ProductServiceImpl">
+        <property name="productDao" ref="productDao"/>
+    </bean>
+
+    <bean id="productDao" class="com.wine_shop.dao.Hibernate.ProductDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    &lt;!&ndash;收件人&ndash;&gt;
+    <bean id="receiverAction" class="com.wine_shop.action.ReceiverAction" scope="prototype">
+        <property name="receiverService" ref="receiverService"/>
+    </bean>
+
+    <bean id="receiverService" class="com.wine_shop.wineService.spring.ReceiverServiceImpl">
+        <property name="receiverDao" ref="receiverDao"/>
+    </bean>
+
+    <bean id="receiverDao" class="com.wine_shop.dao.Hibernate.ReceiverDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    &lt;!&ndash;推荐&ndash;&gt;
+    <bean id="reportAction" class="com.wine_shop.action.ReportAction" scope="prototype">
+        <property name="reportService" ref="reportService"/>
+    </bean>
+
+    <bean id="reportService" class="com.wine_shop.wineService.spring.ReportServiceImpl">
+        <property name="reportDao" ref="reportDao"/>
+    </bean>
+
+    <bean id="reportDao" class="com.wine_shop.dao.Hibernate.ReportDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    &lt;!&ndash;推荐产品&ndash;&gt;
+    <bean id="reportProductsAction" class="com.wine_shop.action.ReportProductsAction" scope="prototype">
+        <property name="reportProductService" ref="reportProductService"/>
+    </bean>
+
+    <bean id="reportProductService" class="com.wine_shop.wineService.spring.ReportProductServiceImpl">
+        <property name="reportProductsDao" ref="reportProductsDao"/>
+    </bean>
+
+    <bean id="reportProductsDao" class="com.wine_shop.dao.Hibernate.ReportProductsDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>-->
+
+   <!--首页-->
+    <bean id="indexAction" class="com.wine_shop.action.IndexAction" scope="prototype">
+        <property name="categoriesService" ref="categoriesService"/>
+        <property name="categoryDetailService" ref="categoryDetailService"/>
+        <property name="productService" ref="productService"/>
+        <property name="reportService" ref="reportService"/>
+    </bean>
+
+   <!-- 购物车-->
+    <!--<bean id="shopCartAction" class="com.wine_shop.action.ShopCartAction" scope="prototype">
+        <property name="productService" ref="productService"/>
+        <property name="orderLineService" ref="orderLineService"/>
+    </bean>
+-->
+   <!-- <bean id="prop" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <array>
+                <value>classpath:public.properties</value>
+                <value>classpath:pay.properties</value>
+            </array>
+        </property>
+    </bean>
+
+    &lt;!&ndash;&ndash;&gt;
+    <bean id="productTimerTask" class="com.wine_shop.utils.impl.ProductTimerTask"/>
+    <bean id="fileUpload" class="com.wine_shop.utils.impl.FileUploadUtil"/>-->
+
+</beans>

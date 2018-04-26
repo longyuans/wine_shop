@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.wine_shop.bean.Product" table="product" schema="wine_shop">
+        <id name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="price" column="price"/>
+        <property name="serviceFg" column="service_fg"/>
+        <property name="serviceMyf" column="service_myf"/>
+        <property name="serviceZt" column="service_zt"/>
+        <property name="serviceTh" column="service_th"/>
+        <property name="year" column="year"/>
+        <property name="level" column="level"/>
+        <property name="stock" column="stock"/>
+        <property name="description" column="description"/>
+        <property name="chateauId" column="chateau_id"/>
+        <property name="alcoholContent" column="alcohol_content"/>
+        <property name="identifier" column="identifier"/>
+        <property name="images" column="images"/>
+        <property name="chateauDescription" column="chateau_description"/>
+        <property name="catDetailId" column="cat_detail_id"/>
+        <property name="saleNum" column="sale_num"/>
+        <property name="flag" column="flag"/>
+        <property name="attributes" column="attributes"/>
+        <property name="cateId" column="cate_id"/>
+        <property name="evaluates" column="evaluates"/>
+        <property name="featureImages" column="feature_images"/>
+    </class>
+</hibernate-mapping>

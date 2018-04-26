@@ -1,0 +1,201 @@
+@CHARSET "UTF-8";
+html, body, div, span, applet, object, iframe, b h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    background: transparent;
+    list-style: none;
+}
+* {
+    padding: 0;
+    margin: 0;
+}
+.register_box{
+	margin:auto;
+	background: #fff;
+	position: relative;
+	top:10px;
+	right: -10px;
+	width: 950px;
+	font-family: 'Microsoft YaHei';
+	box-shadow: 1px 1px 1px rgb(232,235,236);
+	margin-bottom:30px;
+	margin-top:30px;
+	padding-bottom: 15px;
+}
+.register_box .head {
+    height: 74px;
+    border-bottom: solid 1px #eceef2;
+    padding-right: 15px;
+    margin: 0 10px;
+}
+.register_box .head h3 {
+    font-size: 16px;
+    line-height: 18px;
+    padding-left: 13px;
+    float: left;
+    margin-top: 42px;
+}
+.register_box .security {
+    border: none 0;
+}
+.security {
+    border: 1px solid #dcdcdc;
+    border-top: none 0;
+    padding: 30px 45px;
+    margin-bottom: 35px;
+}
+.step {
+    text-align: center;
+    margin-bottom: 25px;
+}
+step li.green {
+    color: #66c67f;
+}
+.step li {
+    width: 120px;
+    display: inline-block;
+    height: 48px;
+    color: #dcdcdc;
+    line-height: 24px;
+    *display: inline;
+    *zoom: 1;
+}
+.step li.green .line {
+    background-position: 0 0;
+}
+.step li .line {
+    display: block;
+    color: #fff;
+    background: url(../images/step_bg.png) -120px 0 no-repeat;
+    width: 120px;
+    height: 24px;
+}
+body, ul, li, ol, p, dl, dd, h1, h2, h3, h4, h5, h6, img, iframe, form, div {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    border: 0;
+}
+ul, ol, li {
+    list-style: none;
+}
+.security .list input {
+    width: 90px;
+    font: 12px/36px "Microsoft Yahei";
+    color: #969696;
+    padding: 0 0 0 10px;
+    border: 1px solid #d2d2d2;
+    height: 36px;
+    margin-right: 18px;
+    display: inline-block;
+    vertical-align: middle;
+}
+input {
+    padding: 0;
+    margin: 0;
+}
+* {
+    padding: 0;
+    margin: 0;
+}
+.security .list li {
+    line-height: 36px;
+}
+.security .list .name {
+    width: 325px;
+    text-align: right;
+    margin-right: 10px;
+    font-size: 14px;
+    float: left;
+    line-height: 38px;
+}
+.security .list .icon {
+    display: none;
+}
+.security .list .icon {
+    display: inline-block;
+    width: 16px;
+    height: 38px;
+    background: url(../images/icon.png) 0 -74px no-repeat;
+    vertical-align: middle;
+}
+.security .list li .ltip {
+    position: absolute;
+    left: 335px;
+    top: 46px;
+    color: #969696;
+}
+.security .list li {
+    padding: 14px 0;
+    line-height: 36px;
+    height: 38px;
+    position: relative;
+}
+.security .list input {
+    width: 90px;
+    font: 12px/36px "Microsoft Yahei";
+    color: #969696;
+    padding: 0 0 0 10px;
+    border: 1px solid #d2d2d2;
+    height: 36px;
+    margin-right: 18px;
+    display: inline-block;
+    vertical-align: middle;
+}
+input {
+    padding: 0;
+    margin: 0;
+}
+.security .list .code {
+    display: inline-block;
+    width: 85px;
+    height: 38px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+img {
+    border: 0;
+}
+.security a.more {
+    color: #1a66b3;
+}
+.security .list a.btn_red {
+	margin-left:335px;
+    background-color: #ff2832;
+    display: inline-block;
+    width: 86px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    left:100px;
+}
+a:link, a:visited {
+    text-decoration: none;
+    color: #969696;
+}
+a {
+    color: #1a66b3;
+    text-decoration: none;
+}
+.security .list input.long {
+    width: 224px;
+}
+.btn_check{
+    background-color: #F6F6F6;
+    display: inline-block;
+    width: 80px;
+    height: 30px;
+    line-height: 35px;
+    text-align: center;
+    color: #ffffff;
+    left:100px;
+    border:1px;
+}
+.security .p_con {
+    padding: 100px 0 100px 310px;
+    line-height: 24px;
+}

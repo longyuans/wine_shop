@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.wine_shop.bean.Order" table="order" schema="wine_shop">
+        <id name="id" column="id"/>
+        <property name="userId" column="user_id"/>
+        <property name="receiverId" column="receiver_id"/>
+        <property name="productId" column="product_id"/>
+        <property name="createTime" column="create_time"/>
+        <property name="updateTime" column="update_time"/>
+        <property name="num" column="num"/>
+        <property name="money" column="money"/>
+        <property name="payWay" column="pay_way"/>
+        <property name="attributes" column="attributes"/>
+    </class>
+</hibernate-mapping>
